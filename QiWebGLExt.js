@@ -1171,28 +1171,39 @@ class QiWebGLExt{
 	}
 };
 
-window.ExtensionLib = {
-	QiWebGLExt:{
-		Extension: async () =>QiWebGLExt,
-		info: {
-			name: "QiWebGLExt.name",
-			description: "QiWebGLExt.descp",
-			extensionId: qi_webgl_extension_id,
-			iconURL: qi_webgl_extension_icon,
-			insetIconURL: qi_webgl_extension_picture,
-			featured: true,
-			disabled: false,
-			collaborator: "Qi @ CCW"
-		},
-		l10n: {
-			"zh-cn": {
-				"QiWebGLExt.name": "[test]QiWebGLExt",
-				"QiWebGLExt.descp": "WebGL接口"
-			},
-			en: {
-				"QiWebGLExt.name": "[test]QiWebGLExt",
-				"QiWebGLExt.descp": "WebGL Port"
-			}
-		}
-	}
+window.tempExt = {
+    Extension: QiWebGLExt,
+    info: {
+        name: "QiWebGLExt.name",
+        description: "QiWebGLExt.descp",
+        extensionId: qi_net_extension_id,
+        iconURL: qi_net_extension_icon,
+        insetIconURL: qi_net_extension_picture,
+        featured: true,
+        disabled: false,
+        collaborator: "Qi @ CCW"
+    },
+    l10n: {
+        "zh-cn": {
+            "QiWebGLExt.name": "[test]QiWebGLExt",
+            "QiWebGLExt.descp": "WebGL接口"
+        },
+        en: {
+            "QiWebGLExt.name": "[test]QiWebGLExt",
+            "QiWebGLExt.descp": "WebGL Port"
+        }
+    }
 };
+Object.defineProperty(window, "tempExt", {
+  get() {
+    console.error("[Error] Never use tempExt as a variable.");
+  },
+  set(v) {
+    window.ExtensionLib = window.ExtensionLib || {};
+    window.ExtensionLib[v.info.extensionId] = {
+      Extension: async () => v.Extension,
+      info: v.info,
+      l10n: v.l10n,
+    };
+  },
+});
